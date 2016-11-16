@@ -553,4 +553,6 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 $msp = new Multisite_Posts();
 add_action( 'widgets_init', create_function( '', 'register_widget( "Multisite_Posts_Widget" );') );
+
+
 ?>
