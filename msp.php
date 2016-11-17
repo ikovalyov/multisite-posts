@@ -226,7 +226,7 @@ class Multisite_Posts_Core {
 	}
 
 	/*Pagination */
-	function msp_bootstrap_paginate_links($max_num_pages, $id, $current) {
+	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current) {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
@@ -236,7 +236,8 @@ class Multisite_Posts_Core {
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'htype' => 'blog-'.$id )
+			'add_args' => array( 'htype' => 'blog-'.$blog_id ),
+			'add_fragment' => 'something'
 		) );
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
