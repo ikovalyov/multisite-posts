@@ -6,7 +6,8 @@ $(document).ready(function(){
     $(".msp-pagination a").on('click', function(){
         var data = {
             'action': msppagination.action,
-            'whatever': 1//ajax_object.we_value      // We pass php values differently!
+            'blog_id': $(this).attr('blog_id'),
+            'pageNumber': $(this).text()
         };
         // We can also pass the url value separately from ajaxurl for front end AJAX implementations
         jQuery.post(msppagination.ajaxurl, data, function(response) {
