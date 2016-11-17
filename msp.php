@@ -240,8 +240,9 @@ class Multisite_Posts_Core {
 		) );
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
+				global $blog_id;
 				$item = str_replace("/m/page/", "/mpage/", $item);
-				$item = substr_replace($item, " blogid='$blog_id'",stripos($item,'>'),0);
+				$item = substr_replace($item, " blogid='{$blog_id}'",stripos($item,'>'),0);
 				return $item;
 			}, $pagination);
 		}
