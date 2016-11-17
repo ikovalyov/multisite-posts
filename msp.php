@@ -107,13 +107,13 @@ class Multisite_Posts_Core {
 	}
 
 	//Append to List of Options
-	function populate_msp_posts( $msp_posts, $blog_id, $options ) {
+	function populate_msp_posts( $msp_posts, $blog_id, $options , $page = 1) {
 
 		switch_to_blog( $blog_id );
 
 		$this->query 		= !empty( $options["custom_query"] ) ? $options["custom_query"] : array(
 			"cat"				=> $options["category"],
-			"paged"				=> 1,
+			"paged"				=> $page,
 			"post_status"		=> "publish",
 			"posts_per_page"	=> $options["post_no"],
 		);
@@ -140,6 +140,8 @@ class Multisite_Posts_Core {
 		$output 	= '<ul class="blog-posts';
 		$output 	.= !empty( $criteria["thumbnail"] ) ? "" : " thumbnail ";
 		$output		.= '" data-blogid="' . $blog_id . '">';
+
+
 
 		if( $all_post->post_count > 0 ) {
 
@@ -190,7 +192,7 @@ class Multisite_Posts_Core {
 	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false ) {
 
 		$msp_posts 	= get_transient( $this->transient );
-		$one_msp_posts;
+		$one_msp_posts = null;
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
@@ -453,7 +455,7 @@ class Multisite_Posts {
 }
 
 class Multisite_Posts_Widget extends WP_Widget {
-	
+
 	function __construct() {
 
 		$this->msp_core 			= new Multisite_Posts_Core();
@@ -522,7 +524,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 				?>
 				<p>
-					<label for="<?php echo $item_id; ?>"><?php _e( "Blog ID", $this->domain ); ?></label> 
+					<label for="<?php echo $item_id; ?>"><?php _e( "Blog ID", $this->domain ); ?></label>
 					<select class="widefat" id="<?php echo $item_id; ?>" name="<?php echo $item_name; ?>">
 						<?php
 							$dropdown = $this->msp_core->get_blog_list();
