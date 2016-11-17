@@ -200,7 +200,7 @@ class Multisite_Posts_Core {
 		$msp_posts 	= !empty( $msp_posts ) ? $msp_posts : array();
 		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id );
 
-		$pageNumber = get_query_var('blog_page_id');
+		$pageNumber = get_query_var('magic_page_id');
 
 		if( $msp_index !== false ) { //Get existing set
 
@@ -225,17 +225,17 @@ class Multisite_Posts_Core {
 	function msp_bootstrap_paginate_links($max_num_pages, $id, $current) {
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-			'format' => '?blog_page_id=%#%',
+			'format' => '?magic_page_id=%#%',
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'blog' => $id )
+			'add_args' => array( 'htype' => 'blog-'.$id )
 		) );
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
-				return str_replace("/page/", "/bpage/", $item);
+				return str_replace("/page/", "/mpage/", $item);
 			}, $pagination);
 		}
 		$output = '
