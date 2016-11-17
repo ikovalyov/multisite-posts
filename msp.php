@@ -530,7 +530,8 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 	}
 	function wp_enqueue_scripts_callback(){
-		wp_enqueue_script('msp_pagination', plugins_url( "assets/pagination.js", __FILE__ ), array('jquery'), true, false);
+		wp_enqueue_script('msp-pagination', plugins_url( "assets/pagination.js", __FILE__ ), array('jquery'), true, false);
+		wp_localize_script( 'msp-pagination', 'msppagination', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	function update( $new_instance, $old_instance ) {
@@ -615,7 +616,7 @@ function msp_pagination_callback(){
 
 $msp = new Multisite_Posts();
 add_action( 'widgets_init', create_function( '', 'register_widget( "Multisite_Posts_Widget" );') );
-wp_localize_script( 'msp-pagination', 'msppagination', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+
 add_action( 'wp_ajax_msp_pagination', 'msp_pagination_callback' );
 add_action( 'wp_ajax_nopriv_msp_pagination', 'msp_pagination_callback' );
 
