@@ -225,6 +225,7 @@ class Multisite_Posts_Core {
 
 	/*Pagination */
 	function msp_bootstrap_paginate_links($max_num_pages, $id, $current) {
+
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
 			'format' => '?magic_page_id=%#%',
@@ -235,6 +236,8 @@ class Multisite_Posts_Core {
 			'next_text' => '&raquo;',
 			'add_args' => array( 'htype' => 'blog-'.$id )
 		) );
+		print_r($pagination);
+		exit;
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
 				return str_replace("/page/", "/mpage/", $item);
