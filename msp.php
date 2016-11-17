@@ -236,12 +236,13 @@ class Multisite_Posts_Core {
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'htype' => 'blog-'.$blog_id ),
-			'add_fragment' => 'something'
+			'add_args' => array( 'htype' => 'blog-'.$blog_id )
 		) );
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
-				return str_replace("/m/page/", "/mpage/", $item);
+				$item = str_replace("/m/page/", "/mpage/", $item);
+				$item = substr_replace($item, ' blogid="'.$blog_id.'"',strpos($item,'">"')+1,0);
+				return $item;
 			}, $pagination);
 		}
 		$output = '
