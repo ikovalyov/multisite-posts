@@ -513,6 +513,8 @@ class Multisite_Posts_Widget extends WP_Widget {
 			)
 		);
 
+		add_action( "wp_enqueue_scripts", array($this, "wp_enqueue_scripts_callback") );
+
 	}
 
 	function widget( $args, $instance ) {
@@ -520,13 +522,15 @@ class Multisite_Posts_Widget extends WP_Widget {
 		$title 		= apply_filters( 'widget_title', $instance['title'] );
 		$instance 	= shortcode_atts( $this->default, $instance );
 
-		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js', array('jquery'), '1.0',true);
 
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
 		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true);
 		echo $args["after_widget"];
 
+	}
+	function wp_enqueue_scripts_callback(){
+		wp_enqueue_script('msp-pagination', plugins_url( "assets/pagination.js", __FILE__ ), array('jquery'), true, false);
 	}
 
 	function update( $new_instance, $old_instance ) {
