@@ -9,7 +9,7 @@ $(document).ready(function(){
             'whatever': 1//ajax_object.we_value      // We pass php values differently!
         };
         // We can also pass the url value separately from ajaxurl for front end AJAX implementations
-        jQuery.post(ajaxurl, data, function(response) {
+        jQuery.post(msppagination.ajaxurl, data, function(response) {
             console.log('Got this from the server: ' + response);
         });
         return false;

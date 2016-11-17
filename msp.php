@@ -543,7 +543,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 	}
 	function wp_enqueue_scripts_callback(){
 		wp_enqueue_script('msp_pagination', plugins_url( "assets/pagination.js", __FILE__ ), array('jquery'), true, false);
-		//wp_localize_script( 'msp-pagination', 'mspPagination', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( 'msp-pagination', 'msppagination', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	function update( $new_instance, $old_instance ) {
