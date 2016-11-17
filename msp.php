@@ -243,7 +243,7 @@ class Multisite_Posts_Core {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					$item = str_replace("href", "hiddenHref", $item);
-					$page = substr($item, stripos($item,'page/')+5,strpos($item,'&',strpos($item,'page/')+5) - stripos($item,'page/')+4);
+					$page = substr($item, stripos($item,'page/')+5,strpos($item,'/',strpos($item,'page/')+5) - stripos($item,'page/')+4);
 					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page);return false;'",strpos($item,'>'),0);
 				}
 			}
