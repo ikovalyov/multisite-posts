@@ -595,7 +595,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 	}
 	function addFrontendJavascript(){
-		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js');
+		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js', array('jquery'), '1.0',true);
 	}
 }
 
