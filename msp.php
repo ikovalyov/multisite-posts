@@ -227,7 +227,7 @@ class Multisite_Posts_Core {
 
 	/*Pagination */
 	function msp_bootstrap_paginate_links($max_num_pages, $id, $current) {
-
+		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
 			'format' => '?magic_page_id=%#%',
@@ -249,7 +249,7 @@ class Multisite_Posts_Core {
 		';
 		foreach ( $pagination as $key => $page_link ) {
 			$output .= '
-					<li class="paginated_link'.(( strpos( $page_link, 'current' ) !== false )?  ' active':'' ).'">'.$page_link.'</li>
+					<li class="paginated_link'.(( strpos( $page_link, 'current' ) !== false )?  ' active':'' ).'" >'.$page_link.'</li>
 			';
 		}
 		$output .= '
@@ -520,6 +520,8 @@ class Multisite_Posts_Widget extends WP_Widget {
 		$title 		= apply_filters( 'widget_title', $instance['title'] );
 		$instance 	= shortcode_atts( $this->default, $instance );
 
+		add_action( 'wp_print_scripts', 'addFrontendJavascript' );
+
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
 		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true);
@@ -591,6 +593,9 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		}
 
+	}
+	function addFrontendJavascript(){
+		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js');
 	}
 }
 
