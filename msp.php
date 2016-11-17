@@ -245,7 +245,7 @@ class Multisite_Posts_Core {
 		}
 		$output = '
 			<div class="pages clearfix">
-				<ul class="pagination">
+				<ul class="pagination msp-pagination">
 		';
 		foreach ( $pagination as $key => $page_link ) {
 			$output .= '
