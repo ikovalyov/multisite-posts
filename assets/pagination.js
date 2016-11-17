@@ -2,7 +2,14 @@
  * Created by bosmer on 17.11.2016.
  */
 (function() {
+    function loadPageMSP() {
+
+    }
     $(document).ready(function(){
-        console.log('pagination loaded');
+        $(".msp-pagination a").on('click', 'loadPageMSP');
+        $(".msp-pagination a").each(function(){
+            $(this).attr('hiddenHref',$(this).attr('href'));
+            $(this).removeAttribute('href');
+        })
     });
 })();
