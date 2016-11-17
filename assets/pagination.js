@@ -4,11 +4,7 @@
 $(document).ready(function(){
     console.log('pagination script loaded');
     $(".msp-pagination a").on('click', function(){
-        alert($(this).attr('hiddenHref'));
+        alert($(this).attr('href'));
         return false;
-    });
-    $(".msp-pagination a").each(function(){
-        $(this).attr('hiddenHref',$(this).attr('href'));
-        $(this).attr('href','#');
     });
 });
