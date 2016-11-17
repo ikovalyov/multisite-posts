@@ -241,7 +241,7 @@ class Multisite_Posts_Core {
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
 				$item = str_replace("/m/page/", "/mpage/", $item);
-				$item = substr_replace($item, "blogid=",stripos($item,'href')+6,0);
+				$item = substr_replace($item, "blogid=asd",stripos($item,'">')+3,0);
 				return $item;
 			}, $pagination);
 		}
