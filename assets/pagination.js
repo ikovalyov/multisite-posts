@@ -9,7 +9,7 @@
         $(".msp-pagination a").on('click', 'loadPageMSP');
         $(".msp-pagination a").each(function(){
             $(this).attr('hiddenHref',$(this).attr('href'));
-            $(this).removeAttribute('href');
+            $(this).attr('href','');
         })
     });
 })();
