@@ -13,7 +13,7 @@ function mspLoadPage(blog_id, page){
     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
     jQuery.post(msppagination.ajaxurl, data, function(response) {
         var parent = $("ul[data-blogid = "+blog_id+"]").parent();
-        $("ul[data-blogid = "+blog_id+"]").remove();
+        parent.html('');
         parent.append(response);
     });
     return false;
