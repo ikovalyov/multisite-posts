@@ -239,12 +239,10 @@ class Multisite_Posts_Core {
 			'add_args' => array( 'htype' => 'blog-'.$blog_id )
 		) );
 		if ( !empty( $pagination ) ) {
-			$pagination = array_map(function ($item) {
-				global $blog_id;
+			foreach($pagination as $key => $item){
 				$item = str_replace("/m/page/", "/mpage/", $item);
-				$item = substr_replace($item, " blogid='{$blog_id}'",stripos($item,'>'),0);
-				return $item;
-			}, $pagination);
+				$pagination[$key] = substr_replace($item, " blogid='{$blog_id}'",stripos($item,'>'),0);
+			}
 		}
 		$output = '
 			<div class="pages clearfix">
