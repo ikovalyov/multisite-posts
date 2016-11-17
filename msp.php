@@ -200,7 +200,9 @@ class Multisite_Posts_Core {
 		$msp_posts 	= !empty( $msp_posts ) ? $msp_posts : array();
 		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id );
 
-		$pageNumber = get_query_var('magic_page_id');
+		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
+		else $pageNumber = 1;
+
 
 		if( $msp_index !== false ) { //Get existing set
 
