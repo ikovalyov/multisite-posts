@@ -197,6 +197,7 @@ class Multisite_Posts_Core {
 
 		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
 		else $pageNumber = 1;
+		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;

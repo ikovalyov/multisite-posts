@@ -11,7 +11,9 @@ $(document).ready(function(){
         };
         // We can also pass the url value separately from ajaxurl for front end AJAX implementations
         jQuery.post(msppagination.ajaxurl, data, function(response) {
-            console.log('Got this from the server: ' + response);
+            var parent = $("ul[data-blogid = "+$(this).attr('blogid')+"]").parent();
+            $("ul[data-blogid = "+$(this).attr('blogid')+"]").remove();
+            parent.append(response);
         });
         return false;
     });
