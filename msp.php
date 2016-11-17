@@ -83,14 +83,13 @@ class Multisite_Posts_Core {
 	}
 
 	//Find match based on options and blog_id
-	function options_deep_search( $msp_posts, $options, $blog_id ) {
+	function options_deep_search( $msp_posts, $options, $blog_id, $pageNumber ) {
 
 		if( !empty( $msp_posts ) ) {
 
 			foreach( $msp_posts as $index => $one_msp_posts ) {
 
-				if( $one_msp_posts["criteria"] == $options &&
-					$one_msp_posts["blog_id"] == $blog_id ) {
+				if( $one_msp_posts["criteria"] == $options && $one_msp_posts["blog_id"] == $blog_id  && $one_msp_posts["pageNumber"] == $pageNumber ) {
 
 					return $index;
 
@@ -124,6 +123,7 @@ class Multisite_Posts_Core {
 			"criteria"	=> $options,
 			"all_post" 	=> $new_posts,
 			"blog_id"	=> $blog_id,
+			"pageNumber" => $pageNumber
 		) );
 
 		restore_current_blog();
@@ -195,13 +195,15 @@ class Multisite_Posts_Core {
 		$msp_posts 	= get_transient( $this->transient );
 		$one_msp_posts = null;
 
+		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
+		else $pageNumber = 1;
+
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
 		$msp_posts 	= !empty( $msp_posts ) ? $msp_posts : array();
-		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id );
+		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id , $pageNumber);
 
-		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
-		else $pageNumber = 1;
+
 
 
 		if( $msp_index !== false ) { //Get existing set
