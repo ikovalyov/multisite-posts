@@ -523,9 +523,9 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		$whatever = intval( $_POST['whatever'] );
 
-		$whatever += 10;
-
 		echo $whatever;
+
+		echo "msp_pagination action";
 
 		wp_die(); // this is required to terminate immediately and return a proper response
 	}
