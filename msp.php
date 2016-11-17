@@ -132,7 +132,7 @@ class Multisite_Posts_Core {
 	}
 
 	//Display the posts
-	function display_msp_posts( $one_msp_posts, $echo = false, $options = false ) {
+	function display_msp_posts( $one_msp_posts, $echo = false, $options = false , $pageNumber) {
 
 		$blog_id 	= $one_msp_posts["blog_id"];
 		$all_post 	= $one_msp_posts["all_post"];
@@ -177,7 +177,8 @@ class Multisite_Posts_Core {
 		}
 
 		$output  .= '</ul>';
-		
+
+		$output .= msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id,$pageNumber);
 
 		if($echo) {
 			echo $output;
@@ -212,7 +213,7 @@ class Multisite_Posts_Core {
 
 		}
 
-		$result = $this->display_msp_posts( $one_msp_posts, $echo, false );
+		$result = $this->display_msp_posts( $one_msp_posts, $echo, false , $pageNumber);
 
 		if( !$echo ) return $result;
 		return;
