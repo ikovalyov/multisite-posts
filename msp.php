@@ -241,10 +241,11 @@ class Multisite_Posts_Core {
 		) );
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
-				if(stripos($item, 'href'))
-				$item = str_replace("/m/page/", "/mpage/", $item);
-				$page = substr($item, stripos($item,'>')+1,strpos($item,'<',strpos($item,'>')) - stripos($item,'>')-1);
-				$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page);return false;'",strpos($item,'>'),0);
+				if(stripos($item, 'href')){
+					$item = str_replace("href", "hiddenHref", $item);
+					$page = substr($item, stripos($item,'>')+1,strpos($item,'<',strpos($item,'>')) - stripos($item,'>')-1);
+					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page);return false;'",strpos($item,'>'),0);
+				}
 			}
 		}
 		$output = '
