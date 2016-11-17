@@ -178,7 +178,7 @@ class Multisite_Posts_Core {
 
 		$output  .= '</ul>';
 
-		$output .= msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id,$pageNumber);
+		$output .= msp_bootstrap_paginate_links(100, $blog_id, $pageNumber);
 
 		if($echo) {
 			echo $output;
