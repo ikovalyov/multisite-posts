@@ -515,19 +515,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		add_action( "wp_enqueue_scripts", array($this, "wp_enqueue_scripts_callback") );
 
-		add_action( 'wp_ajax_msp_pagination', 'msp_pagination_callback' );
-		add_action( 'wp_ajax_nopriv_msp_pagination', 'msp_pagination_callback' );
-	}
-	function msp_pagination_callback(){
-		global $wpdb; // this is how you get access to the database
 
-		$whatever = intval( $_POST['whatever'] );
-
-		echo $whatever;
-
-		echo "msp_pagination action";
-
-		wp_die(); // this is required to terminate immediately and return a proper response
 	}
 	function widget( $args, $instance ) {
 
@@ -613,8 +601,22 @@ class Multisite_Posts_Widget extends WP_Widget {
 	}
 }
 
+function msp_pagination_callback(){
+	global $wpdb; // this is how you get access to the database
+
+	$whatever = intval( $_POST['whatever'] );
+
+	echo $whatever;
+
+	echo "msp_pagination action";
+
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+
 $msp = new Multisite_Posts();
 add_action( 'widgets_init', create_function( '', 'register_widget( "Multisite_Posts_Widget" );') );
-
+add_action( 'wp_ajax_msp_pagination', 'msp_pagination_callback' );
+add_action( 'wp_ajax_nopriv_msp_pagination', 'msp_pagination_callback' );
 
 ?>
