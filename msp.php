@@ -520,7 +520,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 		$title 		= apply_filters( 'widget_title', $instance['title'] );
 		$instance 	= shortcode_atts( $this->default, $instance );
 
-		add_action( 'wp_print_scripts', 'addFrontendJavascript' );
+		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js', array('jquery'), '1.0',true);
 
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
@@ -593,9 +593,6 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		}
 
-	}
-	function addFrontendJavascript(){
-		wp_register_script('msp-pagination', PLUGIN_PATH . 'assets/pagination.js', array('jquery'), '1.0',true);
 	}
 }
 
