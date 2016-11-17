@@ -608,13 +608,9 @@ class Multisite_Posts_Widget extends WP_Widget {
 }
 
 function msp_pagination_callback(){
-	global $wpdb; // this is how you get access to the database
-
-	$whatever = intval( $_POST['whatever'] );
-
-	echo $whatever;
-
-	echo "msp_pagination action";
+	$blog_id = (int)$_REQUEST['blog_id'];
+	$msp = new Multisite_Posts_Core(false , $blog_id);
+	$msp->fetch_msp_posts( false, $blog_id, true );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
