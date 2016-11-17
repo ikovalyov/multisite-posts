@@ -236,11 +236,9 @@ class Multisite_Posts_Core {
 			'next_text' => '&raquo;',
 			'add_args' => array( 'htype' => 'blog-'.$id )
 		) );
-		print_r($pagination);
-		exit;
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
-				return str_replace("/page/", "/mpage/", $item);
+				return str_replace("/m/page/", "/mpage/", $item);
 			}, $pagination);
 		}
 		$output = '
