@@ -190,7 +190,7 @@ class Multisite_Posts_Core {
 	}
 
 	//Obtain msp posts for one Blog
-	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false , $pageNumber = 1) {
+	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false) {
 
 		$msp_posts 	= get_transient( $this->transient );
 		$one_msp_posts = null;
@@ -200,6 +200,7 @@ class Multisite_Posts_Core {
 		$msp_posts 	= !empty( $msp_posts ) ? $msp_posts : array();
 		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id );
 
+		$pageNumber = get_query_var('blog_page_id');
 
 		if( $msp_index !== false ) { //Get existing set
 
@@ -224,17 +225,17 @@ class Multisite_Posts_Core {
 	function msp_bootstrap_paginate_links($max_num_pages, $id, $current) {
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-			'format' => '?magic_page_id=%#%',
+			'format' => '?blog_page_id=%#%',
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'htype' => $id )
+			'add_args' => array( 'blog' => $id )
 		) );
 		if ( !empty( $pagination ) ) {
 			$pagination = array_map(function ($item) {
-				return str_replace("/page/", "/mpage/", $item);
+				return str_replace("/page/", "/bpage/", $item);
 			}, $pagination);
 		}
 		$output = '
@@ -513,11 +514,10 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		$title 		= apply_filters( 'widget_title', $instance['title'] );
 		$instance 	= shortcode_atts( $this->default, $instance );
-		$pageNumber = get_query_var('magic_page_id');
 
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
-		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true, $pageNumber);
+		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true);
 		echo $args["after_widget"];
 
 	}
