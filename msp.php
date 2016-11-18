@@ -132,7 +132,7 @@ class Multisite_Posts_Core {
 	}
 
 	//Display the posts
-	function display_msp_posts( $one_msp_posts, $echo = false, $options = false , $pageNumber) {
+	function display_msp_posts( $one_msp_posts, $echo = false, $options = false , $pageNumber = 1, $widget_id = false) {
 
 		$blog_id 	= $one_msp_posts["blog_id"];
 		$all_post 	= $one_msp_posts["all_post"];
@@ -178,7 +178,7 @@ class Multisite_Posts_Core {
 
 		$output  .= '</ul>';
 
-		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id, $pageNumber);
+		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id, $pageNumber, $widget_id);
 
 		if($echo) {
 			echo $output;
@@ -190,7 +190,7 @@ class Multisite_Posts_Core {
 	}
 
 	//Obtain msp posts for one Blog
-	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false) {
+	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false, $widget_id = false) {
 
 		$msp_posts 	= get_transient( $this->transient );
 		$one_msp_posts = null;
@@ -219,7 +219,7 @@ class Multisite_Posts_Core {
 
 		}
 
-		$result = $this->display_msp_posts( $one_msp_posts, $echo, false , $pageNumber);
+		$result = $this->display_msp_posts( $one_msp_posts, $echo, false , $pageNumber, $widget_id);
 
 		if( !$echo ) return $result;
 		return;
@@ -227,7 +227,7 @@ class Multisite_Posts_Core {
 	}
 
 	/*Pagination */
-	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current) {
+	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current, $widget_id = false) {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
@@ -239,7 +239,6 @@ class Multisite_Posts_Core {
 			'next_text' => '&raquo;',
 			'add_args' => array( 'htype' => 'blog-'.$blog_id )
 		) );
-		$widget_id = $this->id;
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
@@ -532,7 +531,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
-		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true);
+		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true, $this->id);
 		echo $args["after_widget"];
 
 	}
