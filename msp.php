@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
+		if($_REQUEST['blog'] == $blog_id) $pageNumber = get_query_var('page');
 		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
@@ -237,7 +237,7 @@ class Multisite_Posts_Core {
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'blog=' => $blog_id)
+			'add_args' => array( 'blog' => $blog_id)
 		) );
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
