@@ -618,7 +618,7 @@ function msp_pagination_callback(){
 	$widget_id_arr = explode('-', $widget_id_full);
 	$widget_name = $widget_id_arr[0];
 	$widget_id = $widget_id_arr[1];
-	$options_arr = get_option($widget_name);
+	$options_arr = get_option('widget_'.$widget_name);
 	$options = $options_arr[$widget_id];
 	echo $_REQUEST['widget_id'];
 	echo $widget_name;
