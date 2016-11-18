@@ -4,7 +4,8 @@
 $(document).ready(function(){
     console.log('pagination script loaded');
 });
-function mspLoadPage(blog_id, page, widget_id){
+function mspLoadPage(blog_id, page, widget_id, event){
+    event.preventDefault();
     var data = {
         'action': msppagination.action,
         'blog_id': blog_id,
