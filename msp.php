@@ -243,8 +243,7 @@ class Multisite_Posts_Core {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					//$item = str_replace("href", "hiddenHref", $item);
-					echo $item;
-					wp_die();
+
 					$href = '';
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
 					if(stripos($item,"paged")) {
