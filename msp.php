@@ -241,12 +241,8 @@ class Multisite_Posts_Core {
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
-					//$item = str_replace("href", "hiddenHref", $item);
 					if(stripos($item,"blogPageNumber"))$page = substr($item, stripos($item,'blogPageNumber')+15,stripos($item,'&', stripos($item,'blogPageNumber')+15) - stripos($item,'blogPageNumber')-15);
 					else $page=1;
-					//if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
-					//if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-					//$item = substr_replace($item, 'href="'.get_site_url().'?blogPageNumber='.$page.'&blog='.$blog_id.'"' , stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
 					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
 				}
 			}
