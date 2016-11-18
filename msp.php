@@ -30,7 +30,13 @@ $global_msp_settings 	= array(
 	"blog_id"	=> get_current_blog_id(),
 	"duration"	=> !empty( $msp_duration ) ? $msp_duration : HOUR_IN_SECONDS * 6,
 	"transient"	=> "msp_posts",
-
+	"default"	=> array(
+		"post_no"		=> 10,
+		"excerpt" 		=> false,
+		"category"		=> "",
+		"thumbnail" 	=> false,
+		"custom_query" 	=> false
+	)
 );
 
 class Multisite_Posts_Core {
