@@ -10,7 +10,7 @@ function mspLoadPage(blog_id, page, widget_id, event){
         'action': msppagination.action,
         'blog_id': blog_id,
         'widget_id': widget_id,
-        'pageNumber': page
+        'blogPageNumber': page
     };
     console.log(data);
     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
