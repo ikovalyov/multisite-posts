@@ -622,7 +622,7 @@ function msp_pagination_callback(){
 	$options = $options_arr[$widget_id];
 	$blog_id = (int)$_REQUEST['blog_id'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
-	$msp->fetch_msp_posts( $options, $blog_id, true );
+	$msp->fetch_msp_posts( $options, $blog_id, true , $widget_id_full);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
