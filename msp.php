@@ -30,13 +30,7 @@ $global_msp_settings 	= array(
 	"blog_id"	=> get_current_blog_id(),
 	"duration"	=> !empty( $msp_duration ) ? $msp_duration : HOUR_IN_SECONDS * 6,
 	"transient"	=> "msp_posts",
-	"default"	=> array(
-		"post_no"		=> 10,
-		"excerpt" 		=> false,
-		"category"		=> "",
-		"thumbnail" 	=> false,
-		"custom_query" 	=> false
-	)
+
 );
 
 class Multisite_Posts_Core {
@@ -239,13 +233,14 @@ class Multisite_Posts_Core {
 			'next_text' => '&raquo;',
 			'add_args' => array( 'htype' => 'blog-'.$blog_id )
 		) );
+		$widget_id = $this->id;
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					$item = str_replace("href", "hiddenHref", $item);
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
 					if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page);return false;'",strpos($item,'>'),0);
+					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page,$widget_id);return false;'",strpos($item,'>'),0);
 				}
 			}
 		}
@@ -613,9 +608,10 @@ class Multisite_Posts_Widget extends WP_Widget {
 }
 
 function msp_pagination_callback(){
+	$options 	= get_option('msp_posts');
 	$blog_id = (int)$_REQUEST['blog_id'];
 	$msp = new Multisite_Posts_Core(false , $blog_id);
-	$msp->fetch_msp_posts( false, $blog_id, true );
+	$msp->fetch_msp_posts( $options, $blog_id, true );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
