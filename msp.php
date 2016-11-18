@@ -613,7 +613,13 @@ class Multisite_Posts_Widget extends WP_Widget {
 }
 
 function msp_pagination_callback(){
-	$options = get_option('widget_'.$_REQUEST['widget_id']);
+
+	$widget_id_full = $_REQUEST['widget_id'];
+	$widget_id_arr = explode('-', $widget_id_full);
+	$widget_name = $widget_id_arr[0];
+	$widget_id = $widget_id_arr[1];
+	$options_arr = get_option($widget_name);
+	$options = $options_arr[$widget_id];
 	echo $_REQUEST['widget_id'];
 	echo $options;
 	print_r($options);
