@@ -231,13 +231,13 @@ class Multisite_Posts_Core {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-			'format' => '',
+			'format' => '?blog_page=%#%',
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
 			'prev_text' => '&laquo;',
 			'next_text' => '&raquo;',
-			'add_args' => array( 'blog' => $blog_id, 'blog_page' => '%#%')
+			'add_args' => array( 'blog' => $blog_id)
 		) );
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
