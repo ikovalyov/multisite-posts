@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blog'] == $blog_id) $pageNumber = get_query_var('page');
+		if($_REQUEST['blog'] == $blog_id) $pageNumber = get_query_var('paged');
 		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
@@ -231,7 +231,7 @@ class Multisite_Posts_Core {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-			'format' => '?page=%#%',
+			'format' => '?paged=%#%',
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
