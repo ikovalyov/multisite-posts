@@ -195,8 +195,8 @@ class Multisite_Posts_Core {
 		$msp_posts 	= get_transient( $this->transient );
 		$one_msp_posts = null;
 
+		$pageNumber = 1;
 		if($_REQUEST['htype'] == 'blog-'.$blog_id) $pageNumber = get_query_var('magic_page_id');
-		else $pageNumber = 1;
 		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
