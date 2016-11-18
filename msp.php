@@ -243,9 +243,16 @@ class Multisite_Posts_Core {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					//$item = str_replace("href", "hiddenHref", $item);
+					$href = '';
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
-					if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);return false;"',strpos($item,'>'),0);
+					if(stripos($item,"paged")) {
+						$page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
+
+						$href = substr($item, stripos($item,'href="')+6,stripos($item,'"', stripos($item,'href="')+6 - stripos($item,'href="')-6));
+
+
+					}
+					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);return false;" attrhref="'.$href.'"',strpos($item,'>'),0);
 				}
 			}
 		}
