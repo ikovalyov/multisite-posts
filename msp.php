@@ -239,14 +239,14 @@ class Multisite_Posts_Core {
 			'next_text' => '&raquo;',
 			'add_args' => array( 'htype' => 'blog-'.$blog_id )
 		) );
-		//$widget_id = $this->id;
+		$widget_id = $this->id;
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					$item = str_replace("href", "hiddenHref", $item);
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
 					if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page);return false;'",strpos($item,'>'),0);
+					$pagination[$key] = substr_replace($item, " onclick='mspLoadPage($blog_id,$page,$widget_id);return false;'",strpos($item,'>'),0);
 				}
 			}
 		}
