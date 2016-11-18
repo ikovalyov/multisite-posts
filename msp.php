@@ -229,8 +229,8 @@ class Multisite_Posts_Core {
 	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current, $widget_id = false) {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
-			'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
-			'format' => '',
+			'base' => get_site_url().'%_%',
+			'format' => '?blogPageNumber=%#%',
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
@@ -245,7 +245,7 @@ class Multisite_Posts_Core {
 
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
 					if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-					$item = substr_replace($item, 'href="'.get_site_url().'?blogPageNumber='.$page.'&blog='.$blog_id.'"' , stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
+					//$item = substr_replace($item, 'href="'.get_site_url().'?blogPageNumber='.$page.'&blog='.$blog_id.'"' , stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
 					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
 				}
 			}
