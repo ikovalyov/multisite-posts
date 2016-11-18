@@ -248,7 +248,7 @@ class Multisite_Posts_Core {
 					if(stripos($item,"paged")) {
 						$page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
 
-						$href = substr($item, stripos($item,'href="')+6,stripos($item,'"', stripos($item,'href="')+6 - stripos($item,'href="')-6));
+						$href = substr($item, stripos($item,'href="')+6,stripos($item,'"', stripos($item,'href="')+6));
 
 
 					}
