@@ -614,6 +614,8 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 function msp_pagination_callback(){
 	$options 	= get_option($_REQUEST['widget_id']);
+	print_r($options);
+	wp_die();
 	$blog_id = (int)$_REQUEST['blog_id'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
 	$msp->fetch_msp_posts( $options, $blog_id, true );
