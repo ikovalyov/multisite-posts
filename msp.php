@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blog'] == $blog_id) $pageNumber = get_query_var('paged', 1);
+		if($_REQUEST['blog'] == $blog_id && get_query_var('paged')) $pageNumber = get_query_var('paged');
 		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
