@@ -11,6 +11,7 @@ function mspLoadPage(blog_id, page, widget_id){
         'widget_id': widget_id,
         'pageNumber': page
     };
+    console.log(data);
     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
     jQuery.post(msppagination.ajaxurl, data, function(response) {
         var parent = $("ul[data-blogid = "+blog_id+"]").parent();
