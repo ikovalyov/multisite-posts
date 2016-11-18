@@ -620,14 +620,6 @@ function msp_pagination_callback(){
 	$widget_id = $widget_id_arr[1];
 	$options_arr = get_option('widget_'.$widget_name);
 	$options = $options_arr[$widget_id];
-	echo $_REQUEST['widget_id'];
-	echo $widget_name;
-	echo $widget_id;
-	echo $options_arr;
-	echo $options;
-	print_r($options_arr);
-	print_r($options);
-	wp_die();
 	$blog_id = (int)$_REQUEST['blog_id'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
 	$msp->fetch_msp_posts( $options, $blog_id, true );
