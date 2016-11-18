@@ -251,6 +251,7 @@ class Multisite_Posts_Core {
 
 						$href = substr($item, stripos($item,'href=')+6, stripos($item,'"', stripos($item,'href=')+6) - stripos($item,'href=') - 6);
 
+						$href = substr($item, stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
 
 					}
 					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);return false;" attrhref="'.$href.'"',strpos($item,'>'),0);
