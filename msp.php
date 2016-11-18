@@ -621,7 +621,7 @@ function msp_pagination_callback(){
 	$options_arr = get_option($widget_name);
 	$options = $options_arr[$widget_id];
 	echo $_REQUEST['widget_id'];
-	echo $options;
+	print_r($options_arr);
 	print_r($options);
 	wp_die();
 	$blog_id = (int)$_REQUEST['blog_id'];
