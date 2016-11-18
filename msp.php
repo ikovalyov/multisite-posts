@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blog'] == $blog_id && get_query_var('magic_page_id')) $pageNumber = get_query_var('magic_page_id');
+		if($_REQUEST['blog'] == $blog_id) $pageNumber = (int)$_REQUEST['blog_page'];
 		if($_REQUEST['pageNumber'])$pageNumber = (int)$_REQUEST['pageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
@@ -245,10 +245,8 @@ class Multisite_Posts_Core {
 					//$item = str_replace("href", "hiddenHref", $item);
 
 					if(stripos($item,"/page/")) $page = substr($item, stripos($item,'page/')+5,stripos($item,'/', stripos($item,'page/')+5) - stripos($item,'page/')-5);
-					if(stripos($item,"paged")) {
-						$page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
-						$item = substr_replace($item, 'href="'.get_site_url().'/page/'.$page.'/?htype=blog-'.$blog_id.'"' , stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
-					}
+					if(stripos($item,"paged")) $page = substr($item, stripos($item,'paged=')+6,stripos($item,'&', stripos($item,'paged=')+6) - stripos($item,'paged=')-6);
+					$pagination[$key] = substr_replace($item, 'href="'.get_site_url().'?blog_page='.$page.'&blog='.$blog_id.'"' , stripos($item,'href'), stripos($item,'>', stripos($item,'href')) - stripos($item,'href'));
 					//$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);return false;" ',strpos($item,'>'),0);
 				}
 			}
