@@ -83,14 +83,13 @@ class Multisite_Posts_Core {
 	}
 
 	//Find match based on options and blog_id
-	function options_deep_search( $msp_posts, $options, $blog_id ) {
+	function options_deep_search( $msp_posts, $options, $blog_id, $pageNumber ) {
 
 		if( !empty( $msp_posts ) ) {
 
 			foreach( $msp_posts as $index => $one_msp_posts ) {
 
-				if( $one_msp_posts["criteria"] == $options &&
-					$one_msp_posts["blog_id"] == $blog_id ) {
+				if( $one_msp_posts["criteria"] == $options && $one_msp_posts["blog_id"] == $blog_id  && $one_msp_posts["pageNumber"] == $pageNumber ) {
 
 					return $index;
 
@@ -107,13 +106,13 @@ class Multisite_Posts_Core {
 	}
 
 	//Append to List of Options
-	function populate_msp_posts( $msp_posts, $blog_id, $options ) {
+	function populate_msp_posts( $msp_posts, $blog_id, $options , $pageNumber = 1) {
 
 		switch_to_blog( $blog_id );
 
 		$this->query 		= !empty( $options["custom_query"] ) ? $options["custom_query"] : array(
 			"cat"				=> $options["category"],
-			"paged"				=> 1,
+			"paged"				=> $pageNumber,
 			"post_status"		=> "publish",
 			"posts_per_page"	=> $options["post_no"],
 		);
@@ -124,6 +123,7 @@ class Multisite_Posts_Core {
 			"criteria"	=> $options,
 			"all_post" 	=> $new_posts,
 			"blog_id"	=> $blog_id,
+			"pageNumber" => $pageNumber
 		) );
 
 		restore_current_blog();
@@ -132,7 +132,7 @@ class Multisite_Posts_Core {
 	}
 
 	//Display the posts
-	function display_msp_posts( $one_msp_posts, $echo = false, $options = false ) {
+	function display_msp_posts( $one_msp_posts, $echo = false, $options = false , $pageNumber = 1, $widget_id = false) {
 
 		$blog_id 	= $one_msp_posts["blog_id"];
 		$all_post 	= $one_msp_posts["all_post"];
@@ -140,6 +140,8 @@ class Multisite_Posts_Core {
 		$output 	= '<ul class="blog-posts';
 		$output 	.= !empty( $criteria["thumbnail"] ) ? "" : " thumbnail ";
 		$output		.= '" data-blogid="' . $blog_id . '">';
+
+
 
 		if( $all_post->post_count > 0 ) {
 
@@ -175,7 +177,8 @@ class Multisite_Posts_Core {
 		}
 
 		$output  .= '</ul>';
-		
+
+		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id, $pageNumber, $widget_id);
 
 		if($echo) {
 			echo $output;
@@ -187,15 +190,20 @@ class Multisite_Posts_Core {
 	}
 
 	//Obtain msp posts for one Blog
-	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false ) {
+	function fetch_msp_posts( $options = false, $blog_id = false, $echo = false, $widget_id = false) {
 
 		$msp_posts 	= get_transient( $this->transient );
-		$one_msp_posts;
+		$one_msp_posts = null;
+
+		$pageNumber = 1;
+		if($_REQUEST['blogPageNumber'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
 		$msp_posts 	= !empty( $msp_posts ) ? $msp_posts : array();
-		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id );
+		$msp_index 	= $this->options_deep_search( $msp_posts, $options, $blog_id , $pageNumber);
+
+
 
 
 		if( $msp_index !== false ) { //Get existing set
@@ -204,17 +212,56 @@ class Multisite_Posts_Core {
 
 		} else { //Do independent query
 
-			$msp_posts 		= $this->populate_msp_posts( $msp_posts, $blog_id, $options );
+			$msp_posts 		= $this->populate_msp_posts( $msp_posts, $blog_id, $options , $pageNumber);
 			$one_msp_posts 	= $msp_posts[count($msp_posts) - 1];
 			set_transient( $this->transient, $msp_posts, $this->duration );
 
 		}
 
-		$result = $this->display_msp_posts( $one_msp_posts, $echo, false );
+		$result = $this->display_msp_posts( $one_msp_posts, $echo, false , $pageNumber, $widget_id);
 
 		if( !$echo ) return $result;
 		return;
 
+	}
+
+	/*Pagination */
+	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current, $widget_id = false) {
+		//Damn using RPWE links....
+		$pagination = paginate_links( array(
+			'base' => get_site_url().'%_%',
+			'format' => '?blogPageNumber=%#%',
+			'current' => $current,
+			'total' => $max_num_pages,
+			'type' => 'array',
+			'prev_text' => '&laquo;',
+			'next_text' => '&raquo;',
+			'add_args' => array( 'blog' => $blog_id)
+		) );
+		if ( !empty( $pagination ) ) {
+			foreach($pagination as $key => $item){
+				if(stripos($item, 'href')){
+					if(stripos($item,"blogPageNumber"))$page = substr($item, stripos($item,'blogPageNumber')+15,stripos($item,'&', stripos($item,'blogPageNumber')+15) - stripos($item,'blogPageNumber')-15);
+					else $page=1;
+					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
+				}
+			}
+		}
+		$output = '
+			<div class="pages clearfix">
+				<ul class="pagination msp-pagination">
+		';
+		foreach ( $pagination as $key => $page_link ) {
+			$output .= '
+					<li class="paginated_link'.(( strpos( $page_link, 'current' ) !== false )?  ' active':'' ).'" >'.$page_link.'</li>
+			';
+		}
+		$output .= '
+				</ul>
+			</div>
+		';
+
+		return $output;
 	}
 
 }
@@ -453,7 +500,7 @@ class Multisite_Posts {
 }
 
 class Multisite_Posts_Widget extends WP_Widget {
-	
+
 	function __construct() {
 
 		$this->msp_core 			= new Multisite_Posts_Core();
@@ -470,18 +517,30 @@ class Multisite_Posts_Widget extends WP_Widget {
 			)
 		);
 
-	}
+		add_action( "wp_enqueue_scripts", array($this, "wp_enqueue_scripts_callback") );
 
+
+	}
 	function widget( $args, $instance ) {
 
 		$title 		= apply_filters( 'widget_title', $instance['title'] );
 		$instance 	= shortcode_atts( $this->default, $instance );
 
+
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
-		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true);
+		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true, $this->id);
 		echo $args["after_widget"];
 
+	}
+	function wp_enqueue_scripts_callback(){
+		wp_enqueue_script('msp-pagination', plugins_url( "assets/pagination.js", __FILE__ ), array('jquery'), true, false);
+		wp_localize_script( 'msp-pagination', 'msppagination',
+			array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'action' => 'msp_pagination'
+			)
+		);
 	}
 
 	function update( $new_instance, $old_instance ) {
@@ -522,7 +581,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 				?>
 				<p>
-					<label for="<?php echo $item_id; ?>"><?php _e( "Blog ID", $this->domain ); ?></label> 
+					<label for="<?php echo $item_id; ?>"><?php _e( "Blog ID", $this->domain ); ?></label>
 					<select class="widefat" id="<?php echo $item_id; ?>" name="<?php echo $item_name; ?>">
 						<?php
 							$dropdown = $this->msp_core->get_blog_list();
@@ -551,6 +610,26 @@ class Multisite_Posts_Widget extends WP_Widget {
 	}
 }
 
+function msp_pagination_callback(){
+
+	$widget_id_full = $_REQUEST['widget_id'];
+	$widget_id_arr = explode('-', $widget_id_full);
+	$widget_name = $widget_id_arr[0];
+	$widget_id = $widget_id_arr[1];
+	$options_arr = get_option('widget_'.$widget_name);
+	$options = $options_arr[$widget_id];
+	$blog_id = (int)$_REQUEST['blog_id'];
+	$msp = new Multisite_Posts_Core($options , $blog_id);
+	$msp->fetch_msp_posts( $options, $blog_id, true , $widget_id_full);
+
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+
 $msp = new Multisite_Posts();
 add_action( 'widgets_init', create_function( '', 'register_widget( "Multisite_Posts_Widget" );') );
+
+add_action( 'wp_ajax_msp_pagination', 'msp_pagination_callback' );
+add_action( 'wp_ajax_nopriv_msp_pagination', 'msp_pagination_callback' );
+
 ?>
