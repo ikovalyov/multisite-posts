@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blogPageNumber'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
+		if($_REQUEST['blogPageNumber'] && $blog_id = (int)$_REQUEST['blog'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
