@@ -617,7 +617,10 @@ function msp_pagination_callback(){
 	$widget_id = $widget_id_arr[1];
 	$options_arr = get_option('widget_'.$widget_name);
 	$options = $options_arr[$widget_id];
-	$blog_id = (int)$_REQUEST['blog_id'];
+	echo "<!--";
+	print_r($options);
+	echo "-->";
+	$blog_id = (int)$_REQUEST['blog'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
 	$msp->fetch_msp_posts( $options, $blog_id, true , $widget_id_full);
 
