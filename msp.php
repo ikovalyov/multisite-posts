@@ -139,7 +139,7 @@ class Multisite_Posts_Core {
 		$criteria 	= $one_msp_posts["criteria"];
 		$output 	= '<ul class="blog-posts';
 		$output 	.= !empty( $criteria["thumbnail"] ) ? "" : " thumbnail ";
-		$output		.= '" data-blogid="' . $blog_id . '">';
+		$output		.= '" data-mspwidgetid="' . $widget_id . '">';
 
 
 
@@ -178,7 +178,7 @@ class Multisite_Posts_Core {
 
 		$output  .= '</ul>';
 
-		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id, $pageNumber, $widget_id);
+		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $pageNumber, $widget_id);
 
 		if($echo) {
 			echo $output;
@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blogPageNumber'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
+		if($_REQUEST['blogPageNumber'] && $widget_id == $_REQUEST['mspid'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
@@ -226,24 +226,23 @@ class Multisite_Posts_Core {
 	}
 
 	/*Pagination */
-	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current, $widget_id = false) {
+	function msp_bootstrap_paginate_links($max_num_pages, $current, $widget_id = false) {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => get_site_url().'%_%',
-			'format' => '?blogPageNumber=%#%',
+			'format' => '?blogPageNumber=%#%&mspid='.$widget_id,
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
 			'prev_text' => '&laquo;',
-			'next_text' => '&raquo;',
-			'add_args' => array( 'blog' => $blog_id)
+			'next_text' => '&raquo;'
 		) );
 		if ( !empty( $pagination ) ) {
 			foreach($pagination as $key => $item){
 				if(stripos($item, 'href')){
 					if(stripos($item,"blogPageNumber"))$page = substr($item, stripos($item,'blogPageNumber')+15,stripos($item,'&', stripos($item,'blogPageNumber')+15) - stripos($item,'blogPageNumber')-15);
 					else $page=1;
-					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
+					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
 				}
 			}
 		}
@@ -612,13 +611,13 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 function msp_pagination_callback(){
 
-	$widget_id_full = $_REQUEST['widget_id'];
+	$widget_id_full = $_REQUEST['mspid'];
 	$widget_id_arr = explode('-', $widget_id_full);
 	$widget_name = $widget_id_arr[0];
 	$widget_id = $widget_id_arr[1];
 	$options_arr = get_option('widget_'.$widget_name);
 	$options = $options_arr[$widget_id];
-	$blog_id = (int)$_REQUEST['blog_id'];
+	$blog_id = $options['blog_id'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
 	$msp->fetch_msp_posts( $options, $blog_id, true , $widget_id_full);
 
