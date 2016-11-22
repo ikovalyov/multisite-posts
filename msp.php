@@ -139,7 +139,7 @@ class Multisite_Posts_Core {
 		$criteria 	= $one_msp_posts["criteria"];
 		$output 	= '<ul class="blog-posts';
 		$output 	.= !empty( $criteria["thumbnail"] ) ? "" : " thumbnail ";
-		$output		.= '" data-blogid="' . $blog_id . '">';
+		$output		.= '" data-mspwidgetid="' . $widget_id . '">';
 
 
 
@@ -242,7 +242,7 @@ class Multisite_Posts_Core {
 				if(stripos($item, 'href')){
 					if(stripos($item,"blogPageNumber"))$page = substr($item, stripos($item,'blogPageNumber')+15,stripos($item,'&', stripos($item,'blogPageNumber')+15) - stripos($item,'blogPageNumber')-15);
 					else $page=1;
-					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$blog_id.','.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
+					$pagination[$key] = substr_replace($item, ' onclick="mspLoadPage('.$page.',\''.$widget_id.'\', event);" ',strpos($item,'>'),0);
 				}
 			}
 		}
@@ -617,10 +617,7 @@ function msp_pagination_callback(){
 	$widget_id = $widget_id_arr[1];
 	$options_arr = get_option('widget_'.$widget_name);
 	$options = $options_arr[$widget_id];
-	echo "<!--";
-	print_r($options);
-	echo "-->";
-	$blog_id = (int)$_REQUEST['blog'];
+	$blog_id = $options['blog_id'];
 	$msp = new Multisite_Posts_Core($options , $blog_id);
 	$msp->fetch_msp_posts( $options, $blog_id, true , $widget_id_full);
 
