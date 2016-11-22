@@ -8,7 +8,7 @@ function mspLoadPage(page, widget_id, event){
     event.preventDefault();
     var data = {
         'action': msppagination.action,
-        'widget_id': widget_id,
+        'mspid': widget_id,
         'blogPageNumber': page
     };
     console.log(data);

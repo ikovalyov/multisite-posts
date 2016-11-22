@@ -178,7 +178,7 @@ class Multisite_Posts_Core {
 
 		$output  .= '</ul>';
 
-		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $blog_id, $pageNumber, $widget_id);
+		$output .= $this->msp_bootstrap_paginate_links($all_post->max_num_pages, $pageNumber, $widget_id);
 
 		if($echo) {
 			echo $output;
@@ -196,7 +196,7 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		if($_REQUEST['blogPageNumber'] && $blog_id == (int)$_REQUEST['blog'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
+		if($_REQUEST['blogPageNumber'] && $widget_id == (int)$_REQUEST['mspid'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
@@ -226,11 +226,11 @@ class Multisite_Posts_Core {
 	}
 
 	/*Pagination */
-	function msp_bootstrap_paginate_links($max_num_pages, $blog_id, $current, $widget_id = false) {
+	function msp_bootstrap_paginate_links($max_num_pages, $current, $widget_id = false) {
 		//Damn using RPWE links....
 		$pagination = paginate_links( array(
 			'base' => get_site_url().'%_%',
-			'format' => '?blogPageNumber=%#%&blog='.$blog_id,
+			'format' => '?blogPageNumber=%#%&mspid='.$widget_id,
 			'current' => $current,
 			'total' => $max_num_pages,
 			'type' => 'array',
@@ -611,7 +611,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 function msp_pagination_callback(){
 
-	$widget_id_full = $_REQUEST['widget_id'];
+	$widget_id_full = $_REQUEST['mspid'];
 	$widget_id_arr = explode('-', $widget_id_full);
 	$widget_name = $widget_id_arr[0];
 	$widget_id = $widget_id_arr[1];
