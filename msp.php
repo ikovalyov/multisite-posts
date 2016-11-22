@@ -528,6 +528,7 @@ class Multisite_Posts_Widget extends WP_Widget {
 
 		echo $args["before_widget"];
 		if ( !empty( $title ) ) echo $args["before_title"] . $title . $args["after_title"];
+		echo "<!--this->id = ".$this->id."-->";
 		$this->msp_core->fetch_msp_posts($instance, $instance["blog_id"], true, $this->id);
 		echo $args["after_widget"];
 
