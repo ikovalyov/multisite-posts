@@ -196,8 +196,8 @@ class Multisite_Posts_Core {
 		$one_msp_posts = null;
 
 		$pageNumber = 1;
-		echo "<!-- widget_id = ".$widget_id." mspid=".(int)$_REQUEST['mspid']."-->";
-		if($_REQUEST['blogPageNumber'] && $widget_id == (int)$_REQUEST['mspid'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
+		echo "<!-- widget_id = ".$widget_id." mspid=".$_REQUEST['mspid']."-->";
+		if($_REQUEST['blogPageNumber'] && $widget_id == $_REQUEST['mspid'])$pageNumber = (int)$_REQUEST['blogPageNumber'];
 
 		$options 	= !empty( $options ) ? $options : $this->default;
 		$blog_id 	= !empty( $blog_id ) ? $blog_id : $this->blog_id;
