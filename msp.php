@@ -166,7 +166,7 @@ class Multisite_Posts_Core {
 				if( !empty( $criteria["excerpt"] ) ) {
 					$output  .= '<p>' . get_the_excerpt() . '</p>';
 				}
-				$output  .= '<p>' . get_the_author() . '</p>';
+				$output  .= '<p>' . get_the_date() . '</p>';
 				$output 	 .= '</div></li>';
 				restore_current_blog();
 
