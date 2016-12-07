@@ -162,11 +162,11 @@ class Multisite_Posts_Core {
 					}
 				}
 
-				$output 	 .= '<div class="msp-content"><a href="' . get_post_permalink() . '" title="' . $post_title . '">' . $post_title . '</a>';
+				$output 	 .= '<div class="msp-content"><a href="' . get_post_permalink() . '" title="' . $post_title . '"><h3>' . $post_title . '</h3></a>';
 				if( !empty( $criteria["excerpt"] ) ) {
 					$output  .= '<p>' . get_the_excerpt() . '</p>';
 				}
-				$output  .= '<p>' . get_the_author() . '</p>';
+				$output  .= '<p>' . get_the_date() . '</p>';
 				$output 	 .= '</div></li>';
 				restore_current_blog();
 
